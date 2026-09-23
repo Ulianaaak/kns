@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Калькулятор КНС (расширенный)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- SheetJS для чтения Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="card">
+    <h1>Расчёт КНС по исходным данным</h1>
+    <p>Введите параметры вручную или загрузите Excel-файл (шаблон можно скачать ниже).</p>
+
+    <div class="upload-section">
+        <label for="excelFile" class="upload-label">📂 Загрузить Excel-файл</label>
+        <input type="file" id="excelFile" accept=".xlsx, .xls">
+        <button type="button" id="btn-template" class="btn-secondary">⬇ Скачать шаблон Excel</button>
+    </div>
+
+    <form id="kns-form" onsubmit="return false;">
+        <fieldset>
+            <legend>1. Исходные данные</legend>
+            <div class="field">
+                <label>Производительность, Q (м³/ч)</label>
+                <input type="number" id="q_m3h" value="170.72" step="0.01">
+            </div>
+            <div class="field">
+                <label>Напор на выходе, H<sub>треб</sub> (м.в.ст.)</label>
+                <input type="number" id="h_req" value="14" step="0.1">
+            </div>
+            <div class="field">
+                <label>Глубина подводящего трубопровода, H<sub>подвод</sub> (м)</label>
+                <input type="number" id="h_in_depth" value="4.7" step="0.1">
+            </div>
+            <div class="field">
+                <label>Глубина отводящего трубопровода, H<sub>отвод</sub> (м)</label>
+                <input type="number" id="h_out_depth" value="2.8" step="0.1">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>2. Схема работы насосных агрегатов</legend>
+            <div class="field">
+                <label>Рабочих агрегатов</label>
+                <input type="number" id="n_work" value="1" min="1">
+            </div>
+            <div class="field">
+                <label>Резервных агрегатов</label>
+                <input type="number" id="n_res" value="1" min="0">
+            </div>
+            <div class="field">
+                <label>На склад (сухой запас)</label>
+                <input type="number" id="n_stock" value="1" min="0">
+            </div>
+            <div class="field">
+                <label>Коэф. снижения подачи одного насоса</label>
+                <input type="number" id="k_reduction" value="0.9" step="0.01">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>3. Расчётные характеристики насосных агрегатов</legend>
+            <div class="field">
+                <label>Потери на трение (м.в.ст.)</label>
+                <input type="number" id="h_friction" value="0.5" step="0.1">
+            </div>
+            <div class="field">
+                <label>Потери на местные сопротивления (м.в.ст.)</label>
+                <input type="number" id="h_local" value="0.2" step="0.1">
+            </div>
+            <div class="field">
+                <label>Габаритный размер улитки насоса, D (мм)</label>
+                <input type="number" id="d_pump" value="500" step="1">
+            </div>
+            <div class="field">
+                <label>Длина насоса с муфтой (мм)</label>
+                <input type="number" id="l_pump" value="1118" step="1">
+            </div>
+            <div class="field">
+                <label>Мин. уровень воды в КНС (мм)</label>
+                <input type="number" id="h_min_water" value="820" step="1">
+            </div>
+            <div class="field">
+                <label>DN автоматической трубной муфты (мм)</label>
+                <input type="number" id="dn_coupling" value="150" step="1">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>4. Геометрические параметры корпуса КНС</legend>
+            <div class="field">
+                <label>Диаметр корпуса внутренний (мм)</label>
+                <input type="number" id="d_inner" value="3200" step="1">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>5. Расчёт полезного объема КНС</legend>
+            <div class="field">
+                <label>Время цикла работы насоса, T (мин)</label>
+                <input type="number" id="t_min" value="5" step="0.1">
+            </div>
+        </fieldset>
+
+        <button type="button" id="btn-calc">Рассчитать</button>
+    </form>
+
+    <div id="result" class="result" style="display:none;"></div>
+</div>
+</body>
+<script src="kns/index.js"></script>
+<script src="js/app.js"></script>
+</html>
