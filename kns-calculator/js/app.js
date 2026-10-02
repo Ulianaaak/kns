@@ -1,56 +1,57 @@
-/**
- * js/app.js
- * Обработка формы, загрузка Excel, вывод результатов.
- * Требует подключения: kns/index.js и xlsx.full.min.js (SheetJS).
- */
 (function () {
     'use strict';
 
-    // Считывание всех полей формы
+    if (typeof window.KNS === 'undefined') {
+        console.error('[app.js] Модуль KNS не загружен. Проверьте путь к kns/index.js');
+        return;
+    }
+
     function readInput() {
+        const val = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            const v = el.value.trim();
+            return v === '' ? '' : parseFloat(v);
+        };
         return {
-            q_m3h:       parseFloat(document.getElementById('q_m3h').value),
-            h_req:       parseFloat(document.getElementById('h_req').value),
-            h_in_depth:  parseFloat(document.getElementById('h_in_depth').value),
-            h_out_depth: parseFloat(document.getElementById('h_out_depth').value),
-            n_work:      parseInt(document.getElementById('n_work').value),
-            n_res:       parseInt(document.getElementById('n_res').value),
-            n_stock:     parseInt(document.getElementById('n_stock').value),
-            k_reduction: parseFloat(document.getElementById('k_reduction').value),
-            h_friction:  parseFloat(document.getElementById('h_friction').value),
-            h_local:     parseFloat(document.getElementById('h_local').value),
-            d_pump:      parseFloat(document.getElementById('d_pump').value),
-            l_pump:      parseFloat(document.getElementById('l_pump').value),
-            h_min_water: parseFloat(document.getElementById('h_min_water').value),
-            dn_coupling: parseFloat(document.getElementById('dn_coupling').value),
-            d_inner:     parseFloat(document.getElementById('d_inner').value),
-            t_min:       parseFloat(document.getElementById('t_min').value)
+            q_m3h:       val('q_m3h'),
+            h_req:       val('h_req'),
+            h_in_depth:  val('h_in_depth'),
+            h_out_depth: val('h_out_depth'),
+            n_work:      val('n_work'),
+            n_res:       val('n_res'),
+            n_stock:     val('n_stock'),
+            d_pump:      val('d_pump'),
+            l_pump:      val('l_pump'),
+            h_min_water: val('h_min_water'),
+            dn_coupling: val('dn_coupling'),
+            h_friction:  val('h_friction'),
+            h_local:     val('h_local'),
+            d_inner:     val('d_inner'),
+            h_ram:       val('h_ram'),
+            h_extra:     val('h_extra'),
+            t_min:       val('t_min'),
+            h_konstr:    val('h_konstr')
         };
     }
 
-    // Заполнение формы данными из Excel
-    function fillForm(data) {
-        const mapping = {
-            'q_m3h': 'q_m3h', 'h_req': 'h_req', 'h_in_depth': 'h_in_depth', 'h_out_depth': 'h_out_depth',
-            'n_work': 'n_work', 'n_res': 'n_res', 'n_stock': 'n_stock', 'k_reduction': 'k_reduction',
-            'h_friction': 'h_friction', 'h_local': 'h_local', 'd_pump': 'd_pump', 'l_pump': 'l_pump',
-            'h_min_water': 'h_min_water', 'dn_coupling': 'dn_coupling', 'd_inner': 'd_inner', 't_min': 't_min'
-        };
-        for (const key in mapping) {
-            if (data[key] !== undefined) {
-                const el = document.getElementById(mapping[key]);
-                if (el) el.value = data[key];
-            }
-        }
+    function applyDefaults() {
+        Object.keys(window.KNS.DEFAULTS).forEach(k => {
+            const el = document.getElementById(k);
+            if (el) el.value = window.KNS.DEFAULTS[k];
+        });
     }
 
-    // Вывод результатов
     function renderResult(r) {
         const box = document.getElementById('result');
         box.style.display = 'block';
+        box.classList.toggle('error', !r.success);
 
         if (!r.success) {
-            box.innerHTML = `<p style="color:#c0392b;"><strong>Ошибка:</strong> ${r.errors.join('<br>')}</p>`;
+            box.innerHTML =
+                '<p><strong>Ошибки:</strong></p><ul>' +
+                r.errors.map(e => `<li>${e}</li>`).join('') +
+                '</ul>';
             return;
         }
 
@@ -62,82 +63,51 @@
                 <tr><td>Производительность (общая)</td><td>${v.q_ls}</td><td>л/с</td></tr>
                 <tr><td>Производительность одного насоса</td><td>${v.q_pump}</td><td>л/с</td></tr>
                 <tr><td>Требуемый напор одного насоса</td><td>${v.h_pump}</td><td>м.в.ст.</td></tr>
+                <tr><td>Коэф. параллельной работы</td><td>${v.k_reduction}</td><td>—</td></tr>
+                <tr><td>Скорость в обвязке</td><td>${v.v_speed}</td><td>м/с</td></tr>
+                <tr><td>Потери на трение</td><td>${v.h_friction}</td><td>м.в.ст.</td></tr>
+                <tr><td>Потери на местные сопротивления</td><td>${v.h_local}</td><td>м.в.ст.</td></tr>
                 <tr><td>Диаметр по параллельной установке</td><td>${v.d_parallel}</td><td>мм</td></tr>
                 <tr><td>Диаметр по длине насоса</td><td>${v.d_length}</td><td>мм</td></tr>
                 <tr><td>Высота корпуса КНС</td><td>${v.h_body}</td><td>мм</td></tr>
                 <tr><td>Рабочий объем</td><td>${v.v_working} л (${v.v_working_m3} м³)</td><td>л / м³</td></tr>
                 <tr><td>Мин. высота рабочего объема</td><td>${v.h_working_min}</td><td>мм</td></tr>
+                <tr><td>Принимаемая рабочая высота</td><td>${v.h_prim_rab_vys}</td><td>мм</td></tr>
+                <tr><td>Труба обвязки</td><td>DN${v.pipe_dn} (${v.pipe_dOut}×${v.pipe_dIn})</td><td>мм</td></tr>
             </table>
             <p style="font-size:14px;color:#7f8c8d;margin-top:10px;">${r.disclaimer}</p>
         `;
     }
 
-    // Обработка кнопки "Рассчитать"
     function onCalculate() {
-        const input = readInput();
-        const result = window.KNS.calculateKNS(input);
-        renderResult(result);
+        try {
+            const input = readInput();
+            const result = window.KNS.calculateKNS(input);
+            renderResult(result);
+        } catch (err) {
+            console.error('[app.js] Ошибка расчёта:', err);
+            const box = document.getElementById('result');
+            box.style.display = 'block';
+            box.classList.add('error');
+            box.innerHTML = `<p><strong>Ошибка:</strong> ${err.message}</p>`;
+        }
     }
 
-    // Обработка загрузки Excel
-    function onFileUpload(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+    function init() {
+        const btn = document.getElementById('btn-calc');
+        if (!btn) {
+            console.error('[app.js] Кнопка #btn-calc не найдена');
+            return;
+        }
+        btn.addEventListener('click', onCalculate);
 
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-            const data = new Uint8Array(evt.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-            // Предполагаем, что данные находятся во 2-й строке (индекс 1),
-            // а заголовки — в 1-й строке (индекс 0).
-            if (jsonData.length < 2) {
-                alert('Файл пуст или имеет неверный формат.');
-                return;
-            }
-
-            const headers = jsonData[0];
-            const values = jsonData[1];
-            const mappedData = {};
-
-            headers.forEach((header, index) => {
-                if (header && values[index] !== undefined) {
-                    mappedData[header.toString().trim()] = values[index];
-                }
-            });
-
-            fillForm(mappedData);
-            onCalculate(); // Автоматический расчёт после загрузки
-        };
-        reader.readAsArrayBuffer(file);
+        applyDefaults();
+        onCalculate();
     }
 
-    // Скачивание шаблона Excel
-    function downloadTemplate() {
-        const headers = [
-            'q_m3h', 'h_req', 'h_in_depth', 'h_out_depth',
-            'n_work', 'n_res', 'n_stock', 'k_reduction',
-            'h_friction', 'h_local', 'd_pump', 'l_pump',
-            'h_min_water', 'dn_coupling', 'd_inner', 't_min'
-        ];
-        const values = [
-            170.72, 14, 4.7, 2.8,
-            1, 1, 1, 0.9,
-            0.5, 0.2, 500, 1118,
-            820, 150, 3200, 5
-        ];
-        const ws = XLSX.utils.aoa_to_sheet([headers, values]);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Данные');
-        XLSX.writeFile(wb, 'Шаблон_КНС.xlsx');
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
     }
-
-    // Инициализация
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('btn-calc').addEventListener('click', onCalculate);
-        document.getElementById('excelFile').addEventListener('change', onFileUpload);
-        document.getElementById('btn-template').addEventListener('click', downloadTemplate);
-    });
 })();
