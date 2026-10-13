@@ -5,56 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Калькулятор КНС</title>
     <link rel="stylesheet" href="css/style.css">
-
     <script src="kns/index.js" defer></script>
+    <script src="js/catalogs.js" defer></script>
+    <script src="js/economics.js" defer></script>
     <script src="js/app.js" defer></script>
 </head>
 <body>
 <div class="card">
-    <h1>Расчёт КНС</h1>
-    <form id="kns-form" onsubmit="return false;">
-        <fieldset>
-            <legend>1. Исходные данные</legend>
-            <div class="field"><label>Производительность, Q (м³/ч)</label><input type="number" id="q_m3h" step="0.01"></div>
-            <div class="field"><label>Напор на выходе, H<sub>треб</sub> (м.в.ст.)</label><input type="number" id="h_req" step="0.1"></div>
-            <div class="field"><label>Глубина подводящего, H<sub>подвод</sub> (м)</label><input type="number" id="h_in_depth" step="0.1"></div>
-            <div class="field"><label>Глубина отводящего, H<sub>отвод</sub> (м)</label><input type="number" id="h_out_depth" step="0.1"></div>
-        </fieldset>
+    <h1>Калькулятор КНС</h1>
 
-        <fieldset>
-            <legend>2. Схема работы насосных агрегатов</legend>
-            <div class="field"><label>Рабочих агрегатов</label><input type="number" id="n_work" min="1"></div>
-            <div class="field"><label>Резервных агрегатов</label><input type="number" id="n_res" min="0"></div>
-            <div class="field"><label>На склад (сухой запас)</label><input type="number" id="n_stock" min="0"></div>
-        </fieldset>
+    <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="calc">Расчёт КНС</button>
+        <button class="tab" data-tab="params">Параметры КНС</button>
+        <button class="tab" data-tab="jbi">ЖБИ</button>
+        <button class="tab" data-tab="metal">Металлоизделия</button>
+        <button class="tab" data-tab="parts">Комплектующие</button>
+        <button class="tab" data-tab="services">Услуги</button>
+        <button class="tab" data-tab="other">Прочие услуги</button>
+        <button class="tab" data-tab="logistics">Логистика</button>
+    </div>
 
-        <fieldset>
-            <legend>3. Расчётные характеристики насосных агрегатов</legend>
-            <div class="field"><label>Габарит улитки насоса, D (мм)</label><input type="number" id="d_pump" step="1"></div>
-            <div class="field"><label>Длина насоса с муфтой (мм)</label><input type="number" id="l_pump" step="1"></div>
-            <div class="field"><label>Мин. уровень воды в КНС (мм)</label><input type="number" id="h_min_water" step="1"></div>
-            <div class="field"><label>DN автоматической трубной муфты (мм)</label><input type="number" id="dn_coupling" step="1"></div>
-            <div class="field"><label>Потери на трение (м.в.ст.)</label><input type="number" id="h_friction" step="0.001"></div>
-            <div class="field"><label>Потери на местные сопротивления (м.в.ст.)</label><input type="number" id="h_local" step="0.01"></div>
-        </fieldset>
+    <!-- 1. Расчёт КНС -->
+    <div class="tab-content active" id="tab-calc">
+        <form id="kns-form" onsubmit="return false;">
+            <fieldset>
+                <legend>1. Исходные данные</legend>
+                <div class="field"><label>Производительность, Q (м³/ч)</label><input type="number" id="q_m3h" step="0.01"></div>
+                <div class="field"><label>Напор на выходе, H<sub>треб</sub> (м.в.ст.)</label><input type="number" id="h_req" step="0.1"></div>
+                <div class="field"><label>Глубина подводящего, H<sub>подвод</sub> (м)</label><input type="number" id="h_in_depth" step="0.1"></div>
+                <div class="field"><label>Глубина отводящего, H<sub>отвод</sub> (м)</label><input type="number" id="h_out_depth" step="0.1"></div>
+            </fieldset>
+            <fieldset>
+                <legend>2. Схема работы насосных агрегатов</legend>
+                <div class="field"><label>Рабочих агрегатов</label><input type="number" id="n_work" min="1"></div>
+                <div class="field"><label>Резервных агрегатов</label><input type="number" id="n_res" min="0"></div>
+                <div class="field"><label>На склад (сухой запас)</label><input type="number" id="n_stock" min="0"></div>
+            </fieldset>
+            <fieldset>
+                <legend>3. Расчётные характеристики насосных агрегатов</legend>
+                <div class="field"><label>Габарит улитки насоса, D (мм)</label><input type="number" id="d_pump" step="1"></div>
+                <div class="field"><label>Длина насоса с муфтой (мм)</label><input type="number" id="l_pump" step="1"></div>
+                <div class="field"><label>Мин. уровень воды в КНС (мм)</label><input type="number" id="h_min_water" step="1"></div>
+                <div class="field"><label>DN автоматической трубной муфты (мм)</label><input type="number" id="dn_coupling" step="1"></div>
+                <div class="field"><label>Потери на трение (м.в.ст.)</label><input type="number" id="h_friction" step="0.001"></div>
+                <div class="field"><label>Потери на местные сопротивления (м.в.ст.)</label><input type="number" id="h_local" step="0.01"></div>
+            </fieldset>
+            <fieldset>
+                <legend>4. Геометрические параметры корпуса КНС</legend>
+                <div class="field"><label>Диаметр корпуса внутренний (мм)</label><input type="number" id="d_inner" step="1"></div>
+                <div class="field"><label>Высота рамы (мм)</label><input type="number" id="h_ram" step="1"></div>
+                <div class="field"><label>Недостающая высота ЖБ (мм)</label><input type="number" id="h_extra" step="1"></div>
+            </fieldset>
+            <fieldset>
+                <legend>5. Полезный объём КНС</legend>
+                <div class="field"><label>Время цикла (мин)</label><input type="number" id="t_min" step="0.1"></div>
+                <div class="field"><label>Конструктивно необх. доп. высота (мм)</label><input type="number" id="h_konstr" step="1"></div>
+            </fieldset>
+            <button type="button" id="btn-calc">Рассчитать</button>
+        </form>
+        <div id="result" class="result" style="display:none;"></div>
+    </div>
 
-        <fieldset>
-            <legend>4. Геометрические параметры корпуса КНС</legend>
-            <div class="field"><label>Диаметр корпуса внутренний (мм)</label><input type="number" id="d_inner" step="1"></div>
-            <div class="field"><label>Высота рамы под насосные агрегаты (мм)</label><input type="number" id="h_ram" step="1"></div>
-            <div class="field"><label>Недостающая высота для сборного ЖБ (мм)</label><input type="number" id="h_extra" step="1"></div>
-        </fieldset>
+    <!-- 2. Параметры КНС -->
+    <div class="tab-content" id="tab-params">
+        <h2>Параметры КНС</h2>
+        <table class="param-table">
+            <thead>
+            <tr><th>Параметр</th><th>Значение</th><th>Обязательность</th></tr>
+            </thead>
+            <tbody id="params-body"></tbody>
+        </table>
+    </div>
 
-        <fieldset>
-            <legend>5. Расчёт полезного объёма КНС</legend>
-            <div class="field"><label>Время цикла работы насоса, T (мин)</label><input type="number" id="t_min" step="0.1"></div>
-            <div class="field"><label>Конструктивно необх. доп. высота (мм)</label><input type="number" id="h_konstr" step="1"></div>
-        </fieldset>
+    <!-- 3. ЖБИ -->
+    <div class="tab-content" id="tab-jbi">
+        <h2>ЖБИ</h2>
+        <div class="filter-bar">
+            <label>Фильтр по группе:</label>
+            <select id="jbi-group-filter"></select>
+        </div>
+        <table class="catalog-table">
+            <thead>
+            <tr>
+                <th>✓</th><th>Тип</th><th>Наименование</th><th>Марка</th>
+                <th>dвн, мм</th><th>dнар, мм</th><th>Высота, мм</th>
+                <th>Кол-во</th><th>Ед</th><th>Цена, руб</th><th>Сумма, руб</th>
+                <th>Обязательность</th>
+            </tr>
+            </thead>
+            <tbody id="jbi-body"></tbody>
+        </table>
+        <div class="subtotal">Итого ЖБИ: <span id="jbi-subtotal">0</span> руб</div>
+    </div>
 
-        <button type="button" id="btn-calc">Рассчитать</button>
-    </form>
+    <!-- 4. Металлоизделия -->
+    <div class="tab-content" id="tab-metal">
+        <h2>Металлические изделия</h2>
+        <p class="hint">Размеры и наименование можно вводить самостоятельно. Обязательные строки заполнены заранее.</p>
+        <table class="catalog-table">
+            <thead>
+            <tr><th>✓</th><th>Группа</th><th>Номенклатура</th><th>Ед</th><th>Размеры</th>
+                <th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+            </thead>
+            <tbody id="metal-body"></tbody>
+        </table>
+        <button type="button" class="btn-secondary" id="metal-add">+ Добавить строку</button>
+        <div class="subtotal">Итого Металлоизделия: <span id="metal-subtotal">0</span> руб</div>
+    </div>
 
-    <div id="result" class="result" style="display:none;"></div>
+    <!-- 5. Комплектующие -->
+    <div class="tab-content" id="tab-parts">
+        <h2>Комплектующие от производства</h2>
+        <table class="catalog-table">
+            <thead>
+            <tr><th>✓</th><th>Номенклатура</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+            </thead>
+            <tbody id="parts-body"></tbody>
+        </table>
+        <button type="button" class="btn-secondary" id="parts-add">+ Добавить строку</button>
+        <div class="subtotal">Итого Комплектующие: <span id="parts-subtotal">0</span> руб</div>
+    </div>
+
+    <!-- 6. Услуги -->
+    <div class="tab-content" id="tab-services">
+        <h2>Услуги</h2>
+        <table class="catalog-table">
+            <thead>
+            <tr>
+                <th>✓</th><th>Группа</th><th>Номенклатура</th><th>Размер</th><th>Ед</th>
+                <th>Кол-во</th><th>Цена, руб</th>
+                <th>Норма, чел.</th><th>Фонд</th><th>Сумма, руб</th>
+            </tr>
+            </thead>
+            <tbody id="services-body"></tbody>
+        </table>
+        <div class="subtotal">Итого Услуги: <span id="services-subtotal">0</span> руб</div>
+    </div>
+
+    <!-- 7. Прочие услуги -->
+    <div class="tab-content" id="tab-other">
+        <h2>Прочие услуги</h2>
+        <table class="catalog-table">
+            <thead>
+            <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+            </thead>
+            <tbody id="other-body"></tbody>
+        </table>
+        <button type="button" class="btn-secondary" id="other-add">+ Добавить строку</button>
+        <div class="subtotal">Итого Прочие услуги: <span id="other-subtotal">0</span> руб</div>
+    </div>
+
+    <!-- 8. Логистика -->
+    <div class="tab-content" id="tab-logistics">
+        <h2>Логистика</h2>
+        <table class="catalog-table">
+            <thead>
+            <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+            </thead>
+            <tbody id="logistics-body"></tbody>
+        </table>
+        <button type="button" class="btn-secondary" id="logistics-add">+ Добавить строку</button>
+        <div class="subtotal">Итого Логистика: <span id="logistics-subtotal">0</span> руб</div>
+    </div>
+
+    <!-- Итог по всему проекту -->
+    <div class="grand-total">
+        <strong>ИТОГО по проекту:</strong> <span id="grand-total">0</span> руб
+    </div>
 </div>
 </body>
 </html>

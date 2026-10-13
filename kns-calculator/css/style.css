@@ -1,96 +1,77 @@
 * { box-sizing: border-box; }
-body {
-    font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
-    background: #f5f5f5;
-    color: #2c3e50;
+body { font-family: Arial, sans-serif; max-width: 1400px; margin: 30px auto; padding: 20px; background: #f5f5f5; color: #2c3e50; }
+h1, h2 { margin-top: 0; color: #2c3e50; }
+h2 { font-size: 20px; margin-bottom: 15px; }
+.card { background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+/* --- Вкладки --- */
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 2px solid #d6e1ec; margin-bottom: 20px; }
+.tab {
+    background: transparent; border: none; padding: 10px 16px;
+    cursor: pointer; font-size: 14px; color: #34495e;
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
 }
-h1 { margin-top: 0; }
-.card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-fieldset {
-    border: 1px solid #d6e1ec;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 20px;
-}
-legend {
-    font-weight: bold;
-    color: #2980b9;
-    padding: 0 8px;
-}
+.tab:hover { color: #2980b9; }
+.tab.active { color: #2980b9; border-bottom-color: #2980b9; font-weight: bold; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* --- Формы --- */
+fieldset { border: 1px solid #d6e1ec; border-radius: 6px; padding: 15px; margin-bottom: 20px; }
+legend { font-weight: bold; color: #2980b9; padding: 0 8px; }
 .field { margin-bottom: 12px; }
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 4px;
-    color: #34495e;
-    font-size: 14px;
-}
-input[type="number"], input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 15px;
+label { display: block; font-weight: bold; margin-bottom: 4px; color: #34495e; font-size: 14px; }
+input[type="number"], input[type="text"], select {
+    width: 100%; padding: 8px; border: 1px solid #ccc;
+    border-radius: 4px; font-size: 15px;
 }
 button {
-    background: #2980b9;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
+    background: #2980b9; color: #fff; border: none;
+    padding: 12px 24px; border-radius: 4px; cursor: pointer;
+    font-size: 16px; margin-top: 10px;
 }
 button:hover { background: #2471a3; }
-.btn-secondary {
-    background: #7f8c8d;
-    font-size: 14px;
-    padding: 8px 16px;
-    margin-left: 10px;
-}
+.btn-secondary { background: #7f8c8d; font-size: 14px; padding: 8px 16px; margin: 10px 0; }
 .btn-secondary:hover { background: #5d6d7e; }
-.upload-section {
-    background: #eaf2f8;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+
+/* --- Результаты --- */
+.result { background: #eaf2f8; border-left: 4px solid #2980b9; padding: 15px; margin-top: 20px; border-radius: 4px; }
+.result-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.result-table th, .result-table td { border: 1px solid #d6e1ec; padding: 8px 12px; text-align: left; }
+.result-table th { background: #d6e1ec; }
+
+/* --- Таблицы --- */
+table.catalog-table, table.param-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.catalog-table th, table.catalog-table td,
+table.param-table th, table.param-table td {
+    border: 1px solid #d6e1ec; padding: 6px 8px; text-align: left;
+    vertical-align: middle;
 }
-.upload-label {
-    font-weight: bold;
-    color: #2980b9;
-    cursor: pointer;
+table.catalog-table thead th, table.param-table thead th {
+    background: #eaf2f8; color: #1a5276; font-size: 12px;
+    position: sticky; top: 0; z-index: 2;
 }
-.result {
-    background: #eaf2f8;
-    border-left: 4px solid #2980b9;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 4px;
+table.catalog-table input[type="number"],
+table.catalog-table input[type="text"],
+table.param-table input,
+table.param-table select {
+    width: 100%; padding: 4px 6px; font-size: 13px;
+    border: 1px solid #ccc; border-radius: 3px;
 }
-.result-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+table.catalog-table tr.included { background: #f0f8e8; }
+table.catalog-table tr.required td:nth-child(2)::before { content: "★ "; color: #c0392b; }
+
+.filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+.filter-bar label { margin: 0; font-weight: bold; }
+.filter-bar select { max-width: 300px; }
+
+.subtotal { background: #dff0d8; padding: 10px 15px; border-radius: 4px; margin-top: 12px; font-size: 15px; font-weight: bold; }
+
+.grand-total {
+    background: #2980b9; color: #fff; padding: 15px 20px;
+    border-radius: 6px; margin-top: 25px; font-size: 18px;
+    text-align: right;
 }
-.result-table th, .result-table td {
-    border: 1px solid #d6e1ec;
-    padding: 8px 12px;
-    text-align: left;
-}
-.result-table th {
-    background: #d6e1ec;
-    color: #1a5276;
-}
+
+.hint { font-size: 12px; color: #7f8c8d; margin: 5px 0 15px; }
