@@ -42,6 +42,7 @@
         const filterSel = document.getElementById('jbi-group-filter');
         if (!tbody) return;
 
+        // Фильтр по группам
         if (filterSel.options.length === 0) {
             const groups = ['Все', ...new Set(window.CATALOG_JBI.map(i => i.group))];
             filterSel.innerHTML = groups.map(g => `<option>${g}</option>`).join('');
@@ -56,19 +57,22 @@
             const tr = document.createElement('tr');
             tr.dataset.idx = globalIdx;
             tr.innerHTML = `
-                <td><input type="checkbox" class="jbi-check"></td>
-                <td>${item.type || ''}</td>
-                <td>${item.name || ''}</td>
-                <td>${item.mark || ''}</td>
-                <td>${item.dIn ?? ''}</td>
-                <td>${item.dOut ?? ''}</td>
-                <td>${item.h ?? ''}</td>
-                <td><input type="number" min="1" value="1" class="jbi-qty" style="width:60px"></td>
-                <td>${item.unit}</td>
-                <td><input type="number" step="0.01" class="jbi-price" style="width:100px"></td>
-                <td class="jbi-sum">0</td>
-                <td>${item.required}</td>
-            `;
+            <td><input type="checkbox" class="jbi-check"></td>
+            <td>${item.name || ''}</td>
+            <td>${item.ntd || ''}</td>
+            <td>${item.vp || ''}</td>
+            <td>${item.dOut ?? ''}</td>
+            <td>${item.dIn ?? ''}</td>
+            <td>${item.thickness ?? ''}</td>
+            <td>${item.h ?? ''}</td>
+            <td>${item.hPg ?? ''}</td>
+            <td>${item.volume ?? ''}</td>
+            <td><input type="number" min="1" value="1" class="jbi-qty" style="width:60px"></td>
+            <td>${item.unit}</td>
+            <td><input type="number" step="0.01" class="jbi-price" style="width:100px"></td>
+            <td class="jbi-sum">0</td>
+            <td>${item.required}</td>
+        `;
             tbody.appendChild(tr);
         });
 
@@ -115,10 +119,14 @@
             items.push({
                 group: src.group,
                 name: src.name,
-                mark: src.mark,
-                dIn: src.dIn,
+                ntd: src.ntd,
+                vp: src.vp,
                 dOut: src.dOut,
+                dIn: src.dIn,
+                thickness: src.thickness,
                 h: src.h,
+                hPg: src.hPg,
+                volume: src.volume,
                 unit: src.unit,
                 qty, price,
                 sum: qty * price
@@ -487,8 +495,15 @@
         const sections = [
             buildParamsSection(params),
             buildItemsSection('ЖБИ', jbi, [
-                { key: 'name', label: 'Наименование' },
-                { key: 'mark', label: 'Марка' },
+                { key: 'name', label: 'Изделие' },
+                { key: 'ntd', label: 'НТД' },
+                { key: 'vp', label: 'ВП' },
+                { key: 'dOut', label: 'Ø внеш' },
+                { key: 'dIn', label: 'Ø внутр' },
+                { key: 'thickness', label: 'Толщ.' },
+                { key: 'h', label: 'Высота' },
+                { key: 'hPg', label: 'Выс. ПГ' },
+                { key: 'volume', label: 'Объём, м³' },
                 { key: 'unit', label: 'Ед' }
             ]),
             buildItemsSection('Металлические изделия', metal, [

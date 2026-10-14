@@ -1,6 +1,7 @@
 /**
  * js/catalogs.js
  * Все справочники для экономической части.
+ * Структура ЖБИ приведена к единому виду.
  */
 
 // ---------- Параметры КНС (форма) ----------
@@ -25,77 +26,94 @@ window.PARAMS_KNS = [
 ];
 
 // ---------- ЖБИ ----------
-// Поля: group, type, name, mark, dIn, dOut, h, plate, unit, required, price
+// Единая структура: group, name, ntd, vp, dOut, dIn, thickness, h, hPg, volume, unit, required, price
 window.CATALOG_JBI = [
-    // Кольца КС
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 7.3',  dIn: 700,  dOut: null, h: 290,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 7.9',  dIn: 700,  dOut: null, h: 890,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 10.3', dIn: 1000, dOut: null, h: 290,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 10.6', dIn: 1000, dOut: null, h: 590,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 10.9', dIn: 1000, dOut: null, h: 890,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 13.9', dIn: 1250, dOut: null, h: 890,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 15.6', dIn: 1500, dOut: null, h: 590,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 15.9', dIn: 1500, dOut: null, h: 890,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 20.6', dIn: 2000, dOut: null, h: 590,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 20.9', dIn: 2000, dOut: null, h: 890,  unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 20.12',dIn: 2000, dOut: null, h: 1190, unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Кольца', type: 'КС', name: 'Стеновое цилиндрическое кольцо', mark: 'КС 25.12',dIn: 2500, dOut: null, h: 1190, unit: 'шт', required: 'Обязательно', price: '' },
-    // КСК
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 1000, h: 600,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 1000, h: 900,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 1250, h: 900,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 1500, h: 600,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 1500, h: 900,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 2000, h: 900,  unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСК', name: 'Стеновое коническое кольцо', mark: 'КСК', dIn: 2000, h: 1200, unit: 'шт', required: 'Желательно', price: '' },
-    // КО
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 700,  dOut: 840,  h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 1000, dOut: 1160, h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 1250, dOut: 1410, h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 1500, dOut: 1680, h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 2000, dOut: 2200, h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КО', name: 'Опорное кольцо', mark: 'КО', dIn: 2500, dOut: 2700, h: '40-150', unit: 'шт', required: 'Желательно', price: '' },
-    // КОД
-    { group: 'Кольца', type: 'КОД', name: 'Стеновое опорное кольцо с днищем', mark: 'КОД', dIn: null, dOut: 900, h: '890-1200', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КОД', name: 'Стеновое опорное кольцо с днищем', mark: 'КОД', dIn: 1000, dOut: 1200, h: '890-1200', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КОД', name: 'Стеновое опорное кольцо с днищем', mark: 'КОД', dIn: 1500, dOut: 1700, h: '890-1200', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КОД', name: 'Стеновое опорное кольцо с днищем', mark: 'КОД', dIn: 2000, dOut: 1700, h: '890-1200', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КОД', name: 'Стеновое опорное кольцо с днищем', mark: 'КОД', dIn: null, dOut: 2200, h: '890-1200', unit: 'шт', required: 'Желательно', price: '' },
-    // КСП
-    { group: 'Кольца', type: 'КСП', name: 'Кольцо с перекрытием', mark: 'КСП', dIn: 1000, dOut: 1200, h: '890-1000', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСП', name: 'Кольцо с перекрытием', mark: 'КСП', dIn: 1500, dOut: 1700, h: '890-1000', unit: 'шт', required: 'Желательно', price: '' },
-    { group: 'Кольца', type: 'КСП', name: 'Кольцо с перекрытием', mark: 'КСП', dIn: 2000, dOut: 2200, h: '890-1000', unit: 'шт', required: 'Желательно', price: '' },
-    // Плиты днища
-    { group: 'Плита днища', type: 'ПН', name: 'Плита днища', mark: 'ПН', dOut: 1000, h: 100, unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плита днища', type: 'ПН', name: 'Плита днища', mark: 'ПН', dOut: 1250, h: 100, unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плита днища', type: 'ПН', name: 'Плита днища', mark: 'ПН', dOut: 1500, h: 100, unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плита днища', type: 'ПН', name: 'Плита днища', mark: 'ПН', dOut: 2000, h: 100, unit: 'шт', required: 'Обязательно', price: '' },
-    // Плиты перекрытия
-    { group: 'Плиты перекрытия', type: 'ПП', name: 'Плита перекрытия смотрового/контрольного колодца', mark: 'ПП', dIn: '700/1000', dOut: 1160, h: '150/160/180', unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ПП', name: 'Плита перекрытия смотрового/контрольного колодца', mark: 'ПП', dIn: '700/1000', dOut: 1410, h: '150/160/180', unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ПП', name: 'Плита перекрытия смотрового/контрольного колодца', mark: 'ПП', dIn: '700/1000', dOut: 1680, h: '150/160/180', unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ПП', name: 'Плита перекрытия смотрового/контрольного колодца', mark: 'ПП', dIn: '700/1000', dOut: 2200, h: '150/160/180', unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ПП', name: 'Плита перекрытия смотрового/контрольного колодца', mark: 'ПП', dIn: '700/1000', dOut: 2700, h: '150/160/180', unit: 'шт', required: 'Обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ППВ', name: 'Плита перекрытия водоприемного колодца', mark: 'ППВ', dIn: 580, dOut: 1000, h: 170, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Плиты перекрытия', type: 'ППВ', name: 'Плита перекрытия водоприемного колодца', mark: 'ППВ', dIn: 800, dOut: 1000, h: 170, unit: 'шт', required: 'Не обязательно', price: '' },
-    // Плиты
-    { group: 'Плиты', type: 'ПО', name: 'Опорная плита', mark: 'ПО', dIn: 1000, h: 150, plate: '1700*1700', unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Плиты', type: 'ПД', name: 'Дорожная плита перекрытия', mark: 'ПД', dIn: 580, h: 220, plate: '2500*1750', unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Плиты', type: 'ПД', name: 'Дорожная плита перекрытия', mark: 'ПД', dIn: 1000, h: 220, plate: '2800*2000', unit: 'шт', required: 'Не обязательно', price: '' },
-    // Рабочая камера КДК/КФК/КЛВ/КЛК/КВГ
-    { group: 'Рабочая камера', type: 'КДК', name: 'Рабочая камера внутриквартальной канализации', mark: 'КДК 10', dIn: 1000, dOut: 1160, h: 1270, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КФК', name: 'Рабочая камера хозяйственно-бытовой канализации', mark: 'КФК 10', dIn: 1000, dOut: 1160, h: 2410, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КФК', name: 'Рабочая камера хозяйственно-бытовой канализации', mark: 'КФК 13', dIn: 1250, dOut: 1410, h: 2630, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КФК', name: 'Рабочая камера хозяйственно-бытовой канализации', mark: 'КФК 15', dIn: 1500, dOut: 1680, h: 2870, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КФК', name: 'Рабочая камера хозяйственно-бытовой канализации', mark: 'КФК 20', dIn: 2000, dOut: 2200, h: 3110, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КЛВ', name: 'Рабочая камера водоприемного колодца', mark: 'КЛВ', dIn: 820, dOut: 960, h: 1550, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КЛК', name: 'Рабочая камера ливневой канализации', mark: 'КЛК 10', dIn: 1000, dOut: 1160, h: 1800, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КЛК', name: 'Рабочая камера ливневой канализации', mark: 'КЛК 13', dIn: 1250, dOut: 1410, h: 1800, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КЛК', name: 'Рабочая камера ливневой канализации', mark: 'КЛК 15', dIn: 1500, dOut: 1680, h: 1980, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КВГ', name: 'Рабочая камера водопроводных/газопроводных сетей', mark: 'КВГ 13', dIn: 1270, dOut: 1410, h: 1980, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КВГ', name: 'Рабочая камера водопроводных/газопроводных сетей', mark: 'КВГ 15', dIn: 1520, dOut: 1680, h: 1980, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КВГ', name: 'Рабочая камера водопроводных/газопроводных сетей', mark: 'КВГ 20', dIn: 2000, dOut: 2200, h: 1980, unit: 'шт', required: 'Не обязательно', price: '' },
-    { group: 'Рабочая камера', type: 'КВГ', name: 'Рабочая камера водопроводных/газопроводных сетей', mark: 'КВГ 25', dIn: 2500, dOut: 2700, h: 1980, unit: 'шт', required: 'Не обязательно', price: '' }
+    // ===== Кольца стеновые (обобщённые) =====
+    { group: 'Кольца стеновые', name: 'КС 7.3',   ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 700,  thickness: '', h: 290,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 7.9',   ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 700,  thickness: '', h: 890,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 10.3',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1000, thickness: '', h: 290,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 10.6',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1000, thickness: '', h: 590,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 10.9',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1000, thickness: '', h: 890,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 13.9',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1250, thickness: '', h: 890,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 15.6',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1500, thickness: '', h: 590,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 15.9',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 1500, thickness: '', h: 890,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 20.6',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 2000, thickness: '', h: 590,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца стеновые', name: 'КС 20.9',  ntd: 'ГОСТ', vp: '—', dOut: '',   dIn: 2000, thickness: '', h: 890,  hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== Кольца опорные =====
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 840,  dIn: 700,  thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 1160, dIn: 1000, thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 1410, dIn: 1250, thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 1680, dIn: 1500, thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 2200, dIn: 2000, thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+    { group: 'Кольца опорные', name: 'КО',  ntd: 'ГОСТ', vp: '—', dOut: 2700, dIn: 2500, thickness: '', h: '40-150', hPg: '', volume: '', unit: 'шт', required: 'Желательно', price: '' },
+
+    // ===== Плиты днища (обобщённые) =====
+    { group: 'Плиты днища', name: 'ПН', ntd: 'ГОСТ', vp: '—', dOut: 1000, dIn: '', thickness: '', h: 100, hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища', name: 'ПН', ntd: 'ГОСТ', vp: '—', dOut: 1250, dIn: '', thickness: '', h: 100, hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища', name: 'ПН', ntd: 'ГОСТ', vp: '—', dOut: 1500, dIn: '', thickness: '', h: 100, hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища', name: 'ПН', ntd: 'ГОСТ', vp: '—', dOut: 2000, dIn: '', thickness: '', h: 100, hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== Плиты перекрытия (обобщённые) =====
+    { group: 'Плиты перекрытия', name: 'ПП (смотровой/контрольный колодец)', ntd: 'ГОСТ', vp: '—', dOut: 1160, dIn: '700/1000', thickness: '', h: '150/160/180', hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия', name: 'ПП (смотровой/контрольный колодец)', ntd: 'ГОСТ', vp: '—', dOut: 1410, dIn: '700/1000', thickness: '', h: '150/160/180', hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия', name: 'ПП (смотровой/контрольный колодец)', ntd: 'ГОСТ', vp: '—', dOut: 1680, dIn: '700/1000', thickness: '', h: '150/160/180', hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия', name: 'ПП (смотровой/контрольный колодец)', ntd: 'ГОСТ', vp: '—', dOut: 2200, dIn: '700/1000', thickness: '', h: '150/160/180', hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия', name: 'ПП (смотровой/контрольный колодец)', ntd: 'ГОСТ', vp: '—', dOut: 2700, dIn: '700/1000', thickness: '', h: '150/160/180', hPg: '', volume: '', unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== ГОСТ, ЗЗБО КС2.0 =====
+    { group: 'Кольца ГОСТ',    name: 'КС7.3 ПГ ФУТ',  ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 880,  dIn: 700,  thickness: 90,  h: 300, hPg: 20, volume: 0.07, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС7.6 ПГ ФУТ',  ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 880,  dIn: 700,  thickness: 90,  h: 600, hPg: 20, volume: 0.13, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС7.9 ПГ ФУТ',  ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 880,  dIn: 700,  thickness: 90,  h: 900, hPg: 20, volume: 0.20, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС10.3 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1200, dIn: 1000, thickness: 100, h: 300, hPg: 20, volume: 0.10, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС10.6 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1200, dIn: 1000, thickness: 100, h: 600, hPg: 20, volume: 0.21, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС10.9 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1200, dIn: 1000, thickness: 100, h: 900, hPg: 20, volume: 0.31, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС15.3 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1720, dIn: 1500, thickness: 110, h: 300, hPg: 30, volume: 0.17, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС15.6 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1720, dIn: 1500, thickness: 110, h: 600, hPg: 30, volume: 0.33, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС15.9 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1720, dIn: 1500, thickness: 110, h: 900, hPg: 30, volume: 0.50, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС20.3 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 2240, dIn: 2000, thickness: 120, h: 300, hPg: 30, volume: 0.24, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС20.6 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 2240, dIn: 2000, thickness: 120, h: 600, hPg: 30, volume: 0.48, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ГОСТ',    name: 'КС20.9 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 2240, dIn: 2000, thickness: 120, h: 900, hPg: 30, volume: 0.72, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ГОСТ', name: 'ПН7 ПГ ФУТ',  ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 880,  dIn: 700,  thickness: 90,  h: 100, hPg: 20, volume: 0.02, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ГОСТ', name: 'ПН10 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1200, dIn: 1000, thickness: 100, h: 100, hPg: 20, volume: 0.11, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ГОСТ', name: 'ПН15 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 1720, dIn: 1500, thickness: 110, h: 120, hPg: 30, volume: 0.28, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ГОСТ', name: 'ПН20 ФУТ',    ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0',     dOut: 2240, dIn: 2000, thickness: 120, h: 120, hPg: 30, volume: 0.47, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ГОСТ', name: 'ПП7 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0', dOut: 880,  dIn: 700,  thickness: 90,  h: 100, hPg: 20, volume: 0.06, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ГОСТ', name: 'ПП10-2 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0', dOut: 1200, dIn: 1000, thickness: 100, h: 150, hPg: 20, volume: 0.11, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ГОСТ', name: '1ПП15-2 ПГ ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0', dOut: 1720, dIn: 1500, thickness: 110, h: 150, hPg: 30, volume: 0.29, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ГОСТ', name: '1ПП20-2 ФУТ', ntd: 'ГОСТ', vp: 'ЗЗБО КС2.0', dOut: 2240, dIn: 2000, thickness: 120, h: 160, hPg: 30, volume: 0.57, unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== ТУ, Уралспец-74 =====
+    { group: 'Кольца ТУ',      name: 'КС7-3 ФУТ',     ntd: 'ТУ', vp: 'Уралспец-74', dOut: 840,  dIn: 700,  thickness: 70,  h: 290, hPg: 'отс.', volume: 0.05, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС7-6 ФУТ',     ntd: 'ТУ', vp: 'Уралспец-74', dOut: 840,  dIn: 700,  thickness: 70,  h: 590, hPg: 'отс.', volume: 0.10, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС7-9 ФУТ',     ntd: 'ТУ', vp: 'Уралспец-74', dOut: 840,  dIn: 700,  thickness: 70,  h: 890, hPg: 'отс.', volume: 0.15, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС10-3 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1160, dIn: 1000, thickness: 80,  h: 290, hPg: 20, volume: 0.08, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС10-6 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1160, dIn: 1000, thickness: 80,  h: 590, hPg: 20, volume: 0.16, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС10-9 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1160, dIn: 1000, thickness: 80,  h: 890, hPg: 20, volume: 0.24, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС15-3 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1680, dIn: 1500, thickness: 90,  h: 290, hPg: 30, volume: 0.13, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС15-6 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1680, dIn: 1500, thickness: 90,  h: 590, hPg: 30, volume: 0.27, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС15-9 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1680, dIn: 1500, thickness: 90,  h: 890, hPg: 30, volume: 0.40, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС20-3 ФУТ',    ntd: 'ТУ', vp: 'Уралспец-74', dOut: 2200, dIn: 2000, thickness: 100, h: 290, hPg: 'отс.', volume: 0.19, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС20-6 ФУТ',    ntd: 'ТУ', vp: 'Уралспец-74', dOut: 2200, dIn: 2000, thickness: 100, h: 590, hPg: 'отс.', volume: 0.39, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца ТУ',      name: 'КС20-9 ФУТ',    ntd: 'ТУ', vp: 'Уралспец-74', dOut: 2200, dIn: 2000, thickness: 100, h: 890, hPg: 'отс.', volume: 0.59, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ТУ', name: 'ПН10 ПГ ФУТ',   ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1160, dIn: 1000, thickness: 80,  h: 100, hPg: 20, volume: 0.11, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ТУ', name: 'ПН15 ПГ ФУТ',   ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1680, dIn: 1500, thickness: 90,  h: 120, hPg: 30, volume: 0.27, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища ТУ', name: 'ПН20 ФУТ',      ntd: 'ТУ', vp: 'Уралспец-74', dOut: 2200, dIn: 2000, thickness: 100, h: 120, hPg: 'отс.', volume: 0.46, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ТУ', name: 'ПП10-2 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1160, dIn: 1000, thickness: 80,  h: 150, hPg: 20, volume: 0.10, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ТУ', name: '1ПП15-2 ПГ ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 1680, dIn: 1500, thickness: 90,  h: 150, hPg: 30, volume: 0.27, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты перекрытия ТУ', name: '1ПП20-2 ФУТ', ntd: 'ТУ', vp: 'Уралспец-74', dOut: 2200, dIn: 2000, thickness: 100, h: 150, hPg: 'отс.', volume: 0.51, unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== ТУ, Рекон (Ø 3200) =====
+    { group: 'Кольца Рекон',   name: 'ПКС32.3', ntd: 'ТУ', vp: 'Рекон', dOut: 3440, dIn: 3200, thickness: 120, h: 290, hPg: 'отс.', volume: 0.18, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца Рекон',   name: 'ПКС32.6', ntd: 'ТУ', vp: 'Рекон', dOut: 3440, dIn: 3200, thickness: 120, h: 590, hPg: 'отс.', volume: 0.37, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца Рекон',   name: 'ПКС32.9', ntd: 'ТУ', vp: 'Рекон', dOut: 3440, dIn: 3200, thickness: 120, h: 890, hPg: 'отс.', volume: 0.56, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища Рекон', name: 'ППН32', ntd: 'ТУ', vp: 'Рекон', dOut: 3440, dIn: 3200, thickness: 120, h: 200, hPg: 'отс.', volume: '0.80*', unit: 'шт', required: 'Обязательно', price: '' },
+
+    // ===== ТУ, Рекон (Ø 2600) =====
+    { group: 'Кольца Рекон',   name: 'ПКС26.3', ntd: 'ТУ', vp: 'Рекон', dOut: 2840, dIn: 2600, thickness: 120, h: 290, hPg: 'отс.', volume: 0.15, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца Рекон',   name: 'ПКС26.6', ntd: 'ТУ', vp: 'Рекон', dOut: 2840, dIn: 2600, thickness: 120, h: 590, hPg: 'отс.', volume: 0.30, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Кольца Рекон',   name: 'ПКС26.9', ntd: 'ТУ', vp: 'Рекон', dOut: 2840, dIn: 2600, thickness: 120, h: 890, hPg: 'отс.', volume: 0.46, unit: 'шт', required: 'Обязательно', price: '' },
+    { group: 'Плиты днища Рекон', name: 'ППН26', ntd: 'ТУ', vp: 'Рекон', dOut: 2840, dIn: 2600, thickness: 120, h: 200, hPg: 'отс.', volume: '0.53*', unit: 'шт', required: 'Обязательно', price: '' }
 ];
 
 // ---------- Металлические изделия ----------
@@ -174,8 +192,6 @@ window.CATALOG_SERVICES = [
 // ---------- Прочие услуги ----------
 window.CATALOG_OTHER = [
     { name: 'Алмазное бурение',              unit: 'ед',    price: '' },
-    { name: 'Логистика до завода',           unit: 'ед',    price: '' },
-    { name: 'Логистика до заказчика',        unit: 'ед',    price: '' },
     { name: 'Устройство площадки',           unit: 'ед',    price: '' },
     { name: 'Сборка ЖБИ колодца',            unit: 'ед',    price: '' },
     { name: 'Сварка колец (полукольца)',     unit: 'ед',    price: '' },
