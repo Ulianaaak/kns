@@ -14,6 +14,10 @@
 <div class="card">
     <h1>Калькулятор КНС</h1>
 
+    <div class="top-actions">
+        <button type="button" id="btn-summary" class="btn-summary">📊 Сводка по всем вкладкам</button>
+    </div>
+
     <div class="tabs" id="tabs">
         <button class="tab active" data-tab="calc">Расчёт КНС</button>
         <button class="tab" data-tab="params">Параметры КНС</button>
@@ -70,9 +74,7 @@
     <div class="tab-content" id="tab-params">
         <h2>Параметры КНС</h2>
         <table class="param-table">
-            <thead>
-            <tr><th>Параметр</th><th>Значение</th><th>Обязательность</th></tr>
-            </thead>
+            <thead><tr><th>Параметр</th><th>Значение</th><th>Обязательность</th></tr></thead>
             <tbody id="params-body"></tbody>
         </table>
     </div>
@@ -87,9 +89,20 @@
         <table class="catalog-table">
             <thead>
             <tr>
-                <th>✓</th><th>Тип</th><th>Наименование</th><th>Марка</th>
-                <th>dвн, мм</th><th>dнар, мм</th><th>Высота, мм</th>
-                <th>Кол-во</th><th>Ед</th><th>Цена, руб</th><th>Сумма, руб</th>
+                <th>✓</th>
+                <th>Изделие</th>
+                <th>НТД</th>
+                <th>ВП</th>
+                <th>Ø внеш, мм</th>
+                <th>Ø внутр, мм</th>
+                <th>Толщина, мм</th>
+                <th>Высота, мм</th>
+                <th>Высота ПГ, мм</th>
+                <th>Объём, м³</th>
+                <th>Кол-во</th>
+                <th>Ед</th>
+                <th>Цена, руб</th>
+                <th>Сумма, руб</th>
                 <th>Обязательность</th>
             </tr>
             </thead>
@@ -101,7 +114,7 @@
     <!-- 4. Металлоизделия -->
     <div class="tab-content" id="tab-metal">
         <h2>Металлические изделия</h2>
-        <p class="hint">Размеры и наименование можно вводить самостоятельно. Обязательные строки заполнены заранее.</p>
+        <p class="hint">Размеры и наименование можно вводить самостоятельно.</p>
         <table class="catalog-table">
             <thead>
             <tr><th>✓</th><th>Группа</th><th>Номенклатура</th><th>Ед</th><th>Размеры</th>
@@ -171,6 +184,21 @@
     <!-- Итог по всему проекту -->
     <div class="grand-total">
         <strong>ИТОГО по проекту:</strong> <span id="grand-total">0</span> руб
+    </div>
+</div>
+
+<!-- Модальное окно сводки -->
+<div class="modal-overlay" id="summary-modal" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Сводная смета по всем вкладкам</h2>
+            <button type="button" class="modal-close" id="summary-close">×</button>
+        </div>
+        <div class="modal-body" id="summary-body"></div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="summary-print">🖨 Печать / Сохранить в PDF</button>
+            <button type="button" class="btn-secondary" id="summary-close-btn">Закрыть</button>
+        </div>
     </div>
 </div>
 </body>
