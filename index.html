@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Калькулятор КНС</title>
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Библиотека для генерации PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <script src="kns/index.js" defer></script>
     <script src="js/catalogs.js" defer></script>
     <script src="js/economics.js" defer></script>
@@ -12,10 +16,14 @@
 </head>
 <body>
 <div class="card">
-    <h1>Калькулятор КНС</h1>
-
-    <div class="top-actions">
-        <button type="button" id="btn-summary" class="btn-summary">📊 Сводка по всем вкладкам</button>
+    <div class="header-bar">
+        <h1>Калькулятор КНС</h1>
+        <div class="top-actions">
+            <button type="button" id="btn-summary" class="btn-summary">📊 Сводка</button>
+            <button type="button" id="btn-export" class="btn-secondary">📤 Экспорт данных</button>
+            <button type="button" id="btn-import" class="btn-secondary">📥 Импорт данных</button>
+            <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
     </div>
 
     <div class="tabs" id="tabs">
@@ -68,6 +76,9 @@
             <button type="button" id="btn-calc">Рассчитать</button>
         </form>
         <div id="result" class="result" style="display:none;"></div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="params">Вперед →</button>
+        </div>
     </div>
 
     <!-- 2. Параметры КНС -->
@@ -77,6 +88,9 @@
             <thead><tr><th>Параметр</th><th>Значение</th><th>Обязательность</th></tr></thead>
             <tbody id="params-body"></tbody>
         </table>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="jbi">Вперед →</button>
+        </div>
     </div>
 
     <!-- 3. ЖБИ -->
@@ -86,97 +100,124 @@
             <label>Фильтр по группе:</label>
             <select id="jbi-group-filter"></select>
         </div>
-        <table class="catalog-table">
-            <thead>
-            <tr>
-                <th>✓</th>
-                <th>Изделие</th>
-                <th>НТД</th>
-                <th>ВП</th>
-                <th>Ø внеш, мм</th>
-                <th>Ø внутр, мм</th>
-                <th>Толщина, мм</th>
-                <th>Высота, мм</th>
-                <th>Высота ПГ, мм</th>
-                <th>Объём, м³</th>
-                <th>Кол-во</th>
-                <th>Ед</th>
-                <th>Цена, руб</th>
-                <th>Сумма, руб</th>
-                <th>Обязательность</th>
-            </tr>
-            </thead>
-            <tbody id="jbi-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr>
+                    <th>✓</th>
+                    <th>Изделие</th>
+                    <th>НТД</th>
+                    <th>ВП</th>
+                    <th>Ø внеш, мм</th>
+                    <th>Ø внутр, мм</th>
+                    <th>Толщина, мм</th>
+                    <th>Высота, мм</th>
+                    <th>Высота ПГ, мм</th>
+                    <th>Объём, м³</th>
+                    <th>Кол-во</th>
+                    <th>Ед</th>
+                    <th>Цена, руб</th>
+                    <th>Сумма, руб</th>
+                    <th>Обязательность</th>
+                </tr>
+                </thead>
+                <tbody id="jbi-body"></tbody>
+            </table>
+        </div>
         <div class="subtotal">Итого ЖБИ: <span id="jbi-subtotal">0</span> руб</div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="metal">Вперед →</button>
+        </div>
     </div>
 
     <!-- 4. Металлоизделия -->
     <div class="tab-content" id="tab-metal">
         <h2>Металлические изделия</h2>
         <p class="hint">Размеры и наименование можно вводить самостоятельно.</p>
-        <table class="catalog-table">
-            <thead>
-            <tr><th>✓</th><th>Группа</th><th>Номенклатура</th><th>Ед</th><th>Размеры</th>
-                <th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
-            </thead>
-            <tbody id="metal-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr><th>✓</th><th>Группа</th><th>Номенклатура</th><th>Ед</th><th>Размеры</th>
+                    <th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+                </thead>
+                <tbody id="metal-body"></tbody>
+            </table>
+        </div>
         <button type="button" class="btn-secondary" id="metal-add">+ Добавить строку</button>
         <div class="subtotal">Итого Металлоизделия: <span id="metal-subtotal">0</span> руб</div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="parts">Вперед →</button>
+        </div>
     </div>
 
     <!-- 5. Комплектующие -->
     <div class="tab-content" id="tab-parts">
         <h2>Комплектующие от производства</h2>
-        <table class="catalog-table">
-            <thead>
-            <tr><th>✓</th><th>Номенклатура</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
-            </thead>
-            <tbody id="parts-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr><th>✓</th><th>Номенклатура</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+                </thead>
+                <tbody id="parts-body"></tbody>
+            </table>
+        </div>
         <button type="button" class="btn-secondary" id="parts-add">+ Добавить строку</button>
         <div class="subtotal">Итого Комплектующие: <span id="parts-subtotal">0</span> руб</div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="services">Вперед →</button>
+        </div>
     </div>
 
     <!-- 6. Услуги -->
     <div class="tab-content" id="tab-services">
         <h2>Услуги</h2>
-        <table class="catalog-table">
-            <thead>
-            <tr>
-                <th>✓</th><th>Группа</th><th>Номенклатура</th><th>Размер</th><th>Ед</th>
-                <th>Кол-во</th><th>Цена, руб</th>
-                <th>Норма, чел.</th><th>Фонд</th><th>Сумма, руб</th>
-            </tr>
-            </thead>
-            <tbody id="services-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr>
+                    <th>✓</th><th>Группа</th><th>Номенклатура</th><th>Размер</th><th>Ед</th>
+                    <th>Кол-во</th><th>Цена, руб</th>
+                    <th>Норма, чел.</th><th>Фонд</th><th>Сумма, руб</th>
+                </tr>
+                </thead>
+                <tbody id="services-body"></tbody>
+            </table>
+        </div>
         <div class="subtotal">Итого Услуги: <span id="services-subtotal">0</span> руб</div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="other">Вперед →</button>
+        </div>
     </div>
 
     <!-- 7. Прочие услуги -->
     <div class="tab-content" id="tab-other">
         <h2>Прочие услуги</h2>
-        <table class="catalog-table">
-            <thead>
-            <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
-            </thead>
-            <tbody id="other-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+                </thead>
+                <tbody id="other-body"></tbody>
+            </table>
+        </div>
         <button type="button" class="btn-secondary" id="other-add">+ Добавить строку</button>
         <div class="subtotal">Итого Прочие услуги: <span id="other-subtotal">0</span> руб</div>
+        <div class="tab-footer">
+            <button type="button" class="btn-next" data-next="logistics">Вперед →</button>
+        </div>
     </div>
 
     <!-- 8. Логистика -->
     <div class="tab-content" id="tab-logistics">
         <h2>Логистика</h2>
-        <table class="catalog-table">
-            <thead>
-            <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
-            </thead>
-            <tbody id="logistics-body"></tbody>
-        </table>
+        <div class="table-wrap">
+            <table class="catalog-table">
+                <thead>
+                <tr><th>✓</th><th>Наименование</th><th>Ед</th><th>Кол-во</th><th>Цена, руб</th><th>Сумма, руб</th></tr>
+                </thead>
+                <tbody id="logistics-body"></tbody>
+            </table>
+        </div>
         <button type="button" class="btn-secondary" id="logistics-add">+ Добавить строку</button>
         <div class="subtotal">Итого Логистика: <span id="logistics-subtotal">0</span> руб</div>
     </div>
@@ -196,7 +237,7 @@
         </div>
         <div class="modal-body" id="summary-body"></div>
         <div class="modal-footer">
-            <button type="button" class="btn-secondary" id="summary-print">🖨 Печать / Сохранить в PDF</button>
+            <button type="button" class="btn-secondary" id="summary-print">🖨 Скачать PDF</button>
             <button type="button" class="btn-secondary" id="summary-close-btn">Закрыть</button>
         </div>
     </div>

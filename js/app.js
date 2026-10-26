@@ -1,14 +1,13 @@
 /**
  * js/app.js
- * Переключение вкладок + расчёт КНС.
  */
 (function () {
     'use strict';
 
-    // ---------- Переключение вкладок ----------
     function initTabs() {
         const tabs = document.querySelectorAll('.tab');
         const contents = document.querySelectorAll('.tab-content');
+
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 tabs.forEach(t => t.classList.remove('active'));
@@ -18,11 +17,18 @@
                 document.getElementById(id).classList.add('active');
             });
         });
-    }
 
-    // ---------- Расчёт КНС ----------
-    if (typeof window.KNS === 'undefined') {
-        console.error('[app.js] Модуль KNS не загружен.');
+        // Кнопки "Вперед"
+        document.querySelectorAll('.btn-next').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const nextTabId = btn.dataset.next;
+                const nextTabBtn = document.querySelector(`.tab[data-tab="${nextTabId}"]`);
+                if (nextTabBtn) {
+                    nextTabBtn.click();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
     }
 
     function readInput() {
@@ -60,13 +66,13 @@
             <h3>Результаты расчёта</h3>
             <table class="result-table">
                 <tr><th>Параметр</th><th>Значение</th><th>Ед. изм.</th></tr>
-                <tr><td>Производительность одного насосного агрегата</td><td>${v.q_pump}</td><td>л/с</td></tr>
-                <tr><td>Требуемый напор одного насосного агрегата</td><td>${v.h_pump}</td><td>м.в.ст.</td></tr>
-                <tr><td>Диаметр расчётный по параллельной установке</td><td>${v.d_parallel}</td><td>мм</td></tr>
-                <tr><td>Диаметр расчётный по длине насосного агрегата</td><td>${v.d_length}</td><td>мм</td></tr>
+                <tr><td>Производительность одного насоса</td><td>${v.q_pump}</td><td>л/с</td></tr>
+                <tr><td>Требуемый напор одного насоса</td><td>${v.h_pump}</td><td>м.в.ст.</td></tr>
+                <tr><td>Диаметр по параллельной установке</td><td>${v.d_parallel}</td><td>мм</td></tr>
+                <tr><td>Диаметр по длине насоса</td><td>${v.d_length}</td><td>мм</td></tr>
                 <tr><td>Высота корпуса расчётная</td><td>${v.h_body}</td><td>мм</td></tr>
                 <tr><td>Рабочий объём</td><td>${v.v_working_m3}</td><td>м³</td></tr>
-                <tr><td>Минимальная высота рабочего объёма</td><td>${v.h_working_min}</td><td>мм</td></tr>
+                <tr><td>Мин. высота рабочего объёма</td><td>${v.h_working_min}</td><td>мм</td></tr>
                 <tr><td>Принимаемая рабочая высота</td><td>${v.h_prim_rab_vys}</td><td>мм</td></tr>
             </table>
             <p style="font-size:14px;color:#7f8c8d;margin-top:10px;">${r.disclaimer}</p>
@@ -82,11 +88,54 @@
         }
     }
 
+    function onExport() {
+        const data = { kns: readInput(), economics: window.Economics.exportData() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `КНС_Данные_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function onImport(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+            try {
+                const data = JSON.parse(evt.target.result);
+
+                if (data.kns) {
+                    Object.keys(data.kns).forEach(k => {
+                        const el = document.getElementById(k);
+                        if (el) el.value = data.kns[k];
+                    });
+                    onCalculate();
+                }
+
+                if (data.economics) {
+                    window.Economics.importData(data.economics);
+                }
+
+                alert('Данные успешно загружены!');
+            } catch (err) {
+                console.error(err);
+                alert('Ошибка при чтении файла. Убедитесь, что это правильный JSON.');
+            }
+            e.target.value = '';
+        };
+        reader.readAsText(file);
+    }
+
     function init() {
         initTabs();
-
-        const btn = document.getElementById('btn-calc');
-        if (btn) btn.addEventListener('click', onCalculate);
+        const btnCalc = document.getElementById('btn-calc');
+        if (btnCalc) btnCalc.addEventListener('click', onCalculate);
 
         applyDefaults();
         onCalculate();
@@ -94,6 +143,12 @@
         if (typeof window.initEconomics === 'function') {
             window.initEconomics();
         }
+
+        document.getElementById('btn-export').addEventListener('click', onExport);
+        document.getElementById('btn-import').addEventListener('click', () => {
+            document.getElementById('import-file').click();
+        });
+        document.getElementById('import-file').addEventListener('change', onImport);
     }
 
     if (document.readyState === 'loading') {
